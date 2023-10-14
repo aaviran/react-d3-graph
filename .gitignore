@@ -72,3 +72,6 @@ gen-docs
 cypress/videos/
 cypress/screenshots/
 yarn.lock # prevent yarn.lock to be pushed, please use npm instead
+
+
+.idea
