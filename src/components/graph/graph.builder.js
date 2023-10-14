@@ -106,6 +106,8 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
     strokeWidth += (linkValue * strokeWidth) / 10;
   }
 
+  const clickableStrokeWidth = strokeWidth * (config.link.clickableStrokeWidthMultiplier || 1);
+
   const markerId = config.directed ? getMarkerId(highlight, transform, config) : null;
 
   const t = 1 / transform;
@@ -165,6 +167,7 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
     onMouseOutLink: linkCallbacks.onMouseOutLink,
     onMouseOverLink: linkCallbacks.onMouseOverLink,
     onRightClickLink: linkCallbacks.onRightClickLink,
+    clickableStrokeWidth,
   };
 }
 

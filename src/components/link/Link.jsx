@@ -89,7 +89,7 @@ export default class Link extends React.Component {
     };
 
     if (this.props.markerId) {
-      lineProps.markerEnd = `url(#${this.props.markerId})`;
+      lineProps.markerMid = `url(#${this.props.markerId})`;
     }
 
     const { label, id } = this.props;
@@ -104,6 +104,18 @@ export default class Link extends React.Component {
 
     return (
       <g>
+        {this.props.clickableStrokeWidth > lineProps.style.strokeWidth && (
+          <path
+            {...lineProps}
+            id={"${id}-clickable"}
+            markerMid=""
+            style={{
+              ...lineProps.style,
+              strokeWidth: this.props.clickableStrokeWidth,
+              stroke: "transparent",
+            }}
+          />
+        )}
         <path {...lineProps} id={id} />
         {label && (
           <text style={{ textAnchor: "middle" }} {...textProps}>

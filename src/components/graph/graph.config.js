@@ -237,6 +237,7 @@
  * ```javascript
  * link.strokeWidth * (1 / transform); // transform is a zoom delta Δ value
  * ```
+ * @param {number} [link.clickableStrokeWidthMultiplier=1] - <a id="link-clickable-stroke-width-multiplier" href="#link-clickable-stroke-width-multiplier">🔗</a> 🔍🔍🔍 clickableStrokeWidthMultiplier for all links.
  * @param {number} [link.markerHeight=6] - <a id="link-marker-height" href="#link-marker-height">🔗</a> <a target="_blank" href="https://developer.mozilla.org/en/docs/Web/SVG/Attribute/markerHeight">markerHeight</a>
  * property for the link arrowhead height. *Note: this property can only be set in the first mount, it does not update dynamically.*
  * @param {number} [link.markerWidth=6] - <a id="link-marker-width" href="#link-marker-width">🔗</a> <a target="_blank" href="https://developer.mozilla.org/en/docs/Web/SVG/Attribute/markerWidth">markerWidth</a>
@@ -345,5 +346,6 @@ export default {
     strokeDasharray: 0,
     strokeDashoffset: 0,
     strokeLinecap: "butt",
+    clickableStrokeWidthMultiplier: 1,
   },
 };
