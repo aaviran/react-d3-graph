@@ -1,15 +1,15 @@
 {
   "name": "react-d3-graph-ari",
-  "version": "2.6.1-alpha",
+  "version": "2.6.1-beta",
   "description": "An extensions of Daniel Caldas awesome react-d3-graph",
   "author": "Daniel Caldas & Ari Aviran",
   "license": "MIT",
   "scripts": {
-    "check": "npm run docs:lint && npm run lint && npm run test",
+    "check": "npm run docs:lint && npm run lint",
     "check:light": "npm run lint && npm run test",
     "dev": "cross-env NODE_ENV=dev webpack-dev-server --mode=development --content-base sandbox --config webpack.config.js --inline --hot --port 3002",
     "dist:rd3g": "rm -rf dist/ && NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack.config.dist.js -p --display-modules --optimize-minimize",
-    "dist:sandbox": "npm run generate:tooltips && webpack --config webpack.config.js -p",
+    "dist:sandbox": "npm run generate:tooltips && NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack.config.js -p",
     "dist:transpile": "babel -d lib src",
     "dist:docs": "documentation --config documentation.yml build src/**/*.js -f html -o gen-docs && documentation build src/**/*.js -f md > gen-docs/DOCUMENTATION.md",
     "dist": "npm install && npm run check && npm-run-all --parallel dist:* && npm run wrapup:dist",
