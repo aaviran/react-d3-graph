@@ -243,7 +243,7 @@ export default class Graph extends React.Component {
       const draggedNodeIds = draggedNode.draggedNodeIds || [];
       const draggedNodes = [draggedNode, ...draggedNodeIds.map(draggedNodeId => this.state.nodes[draggedNodeId])];
 
-      draggedNodes.foreEach(node => {
+      draggedNodes.forEach(node => {
         node.oldX = node.x;
         node.oldY = node.y;
 
