@@ -240,24 +240,28 @@ export default class Graph extends React.Component {
     if (!this.state.config.staticGraph) {
       // this is where d3 and react bind
       let draggedNode = this.state.nodes[id];
+      const draggedNodeIds = draggedNode.draggedNodeIds || [];
+      const draggedNodes = [draggedNode, ...draggedNodeIds.map(draggedNodeId => this.state.nodes[draggedNodeId])];
 
-      draggedNode.oldX = draggedNode.x;
-      draggedNode.oldY = draggedNode.y;
+      draggedNodes.foreEach(node => {
+        node.oldX = node.x;
+        node.oldY = node.y;
 
-      const newX = draggedNode.x + d3Event.dx;
-      const newY = draggedNode.y + d3Event.dy;
-      const shouldUpdateNode = !this.state.config.bounded || isPositionInBounds({ x: newX, y: newY }, this.state);
+        const newX = node.x + d3Event.dx;
+        const newY = node.y + d3Event.dy;
+        const shouldUpdateNode = !this.state.config.bounded || isPositionInBounds({ x: newX, y: newY }, this.state);
 
-      if (shouldUpdateNode) {
-        draggedNode.x = newX;
-        draggedNode.y = newY;
+        if (shouldUpdateNode) {
+          node.x = newX;
+          node.y = newY;
 
-        // set nodes fixing coords fx and fy
-        draggedNode["fx"] = draggedNode.x;
-        draggedNode["fy"] = draggedNode.y;
+          // set nodes fixing coords fx and fy
+          node["fx"] = node.x;
+          node["fy"] = node.y;
+        }
+      });
 
-        this._tick({ draggedNode });
-      }
+      this._tick({ draggedNode });
     }
   };
 
