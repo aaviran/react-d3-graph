@@ -128,7 +128,7 @@ function buildLinkPathDefinition(
       const tyOffset = y + offsetsY;
       const radius = calcRadiusFn(sxOffset, syOffset, txOffset, tyOffset);
 
-      return ` A${radius},${radius} 0 0,1 ${offsetsX},${offsetsY}`;
+      return ` A${radius},${radius} 0 0,1 ${txOffset},${tyOffset}`;
     })
     .join("");
 
