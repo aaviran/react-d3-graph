@@ -3,7 +3,7 @@
  * @description
  * A set of helper methods to manipulate/create links.
  */
-import { LINE_TYPES, SELF_LINK_DIRECTION } from "./link.const";
+import { LINE_TYPES, SELF_LINK_DIRECTION, LINE_POS_OFFSET } from "./link.const";
 
 /**
  * Computes radius value for a straight line.
@@ -58,6 +58,24 @@ function getRadiusStrategy(type) {
 }
 
 /**
+ * Returns the angle between the line defined by the given points and the X axis.
+ * @param {number} x1 X-coordinate of the first point.
+ * @param {number} y1 Y-coordinate of the first point.
+ * @param {number} x2 X-coordinate of the second point.
+ * @param {number} y2 Y-coordinate of the second point.
+ * @returns {number} Angle between the two points and the X axis..
+ */
+function angleBetweenPoints(x1, y1, x2, y2) {
+  if (x1 === x2) {
+    if (y1 > y2) {
+      return -Math.PI / 2;
+    }
+    return Math.PI / 2;
+  }
+  return Math.atan2(y2 - y1, x2 - x1);
+}
+
+/**
  * This method returns the path definition for a given link base on the line type
  * and the link source and target.
  * {@link https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d|d attribute mdn}
@@ -101,13 +119,28 @@ function buildLinkPathDefinition(
   const restOfLinkPath = restOfLinkPoints
     .map(({ x, y }, i) => {
       const { x: px, y: py } = i > 0 ? restOfLinkPoints[i - 1] : sourceCoords;
-      const radius = calcRadiusFn(px, py, x, y);
+      // Shift the line along its normal to prevent collision
+      const offsetsX = LINE_POS_OFFSET * Math.sin(angleBetweenPoints(px, py, x, y));
+      const offsetsY = LINE_POS_OFFSET * -Math.cos(angleBetweenPoints(px, py, x, y));
+      const sxOffset = px + offsetsX;
+      const syOffset = py + offsetsY;
+      const txOffset = x + offsetsX;
+      const tyOffset = y + offsetsY;
+      const radius = calcRadiusFn(sxOffset, syOffset, txOffset, tyOffset);
 
-      return ` A${radius},${radius} 0 0,1 ${x},${y}`;
+      return ` A${radius},${radius} 0 0,1 ${offsetsX},${offsetsY}`;
     })
     .join("");
 
-  return `M${sx},${sy}${restOfLinkPath}`;
+  const offsetX = LINE_POS_OFFSET * Math.sin(angleBetweenPoints(sx, sy, tx, ty));
+  const offsetY = LINE_POS_OFFSET * -Math.cos(angleBetweenPoints(sx, sy, tx, ty));
+  const sxReal = sx + offsetX;
+  const syReal = sy + offsetY;
+  const txReal = tx + offsetX;
+  const tyReal = ty + offsetY;
+  const midX = (txReal - sxReal) * 0.9 + sxReal;
+  const midY = (tyReal - syReal) * 0.9 + syReal;
+  return `M${sxReal},${syReal}L${midX},${midY}${restOfLinkPath}`;
 }
 
 export { buildLinkPathDefinition };

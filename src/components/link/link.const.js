@@ -31,4 +31,7 @@ const SELF_LINK_DIRECTION = {
   BOTTOM_RIGHT: "BOTTOM_RIGHT",
 };
 
-export { LINE_TYPES, SELF_LINK_DIRECTION };
+// Offset, in pixels, to slightly shift the line by to prevent collision between links in opposite directions.
+const LINE_POS_OFFSET = 3;
+
+export { LINE_TYPES, SELF_LINK_DIRECTION, LINE_POS_OFFSET };
