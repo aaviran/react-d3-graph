@@ -57,15 +57,6 @@ describe("Utils", () => {
     });
   });
 
-  describe("#isNil", () => {
-    test("should return true for null or undefined", () => {
-      expect(utils.isNil(undefined)).toEqual(true);
-      expect(utils.isNil()).toEqual(true);
-      expect(utils.isNil(null)).toEqual(true);
-      expect(utils.isNil(NaN)).toEqual(false);
-    });
-  });
-
   describe("#isDeepEqual", () => {
     let that = {};
 

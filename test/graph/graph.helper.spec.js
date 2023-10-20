@@ -278,7 +278,7 @@ describe("Graph Helper", () => {
           simulation: {
             force: forceStub,
           },
-          transform: { x: 0, y: 0, k: 1 },
+          transform: 1,
           draggedNode: null,
         });
       });

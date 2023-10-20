@@ -1,4 +1,4 @@
-/*eslint require-jsdoc: 0, valid-jsdoc: 0, no-console: 0, max-lines: 0*/
+/*eslint require-jsdoc: 0, valid-jsdoc: 0, no-console: 0*/
 import React from "react";
 import { JsonTree } from "react-editable-json-tree";
 import Form from "react-jsonschema-form";
@@ -9,7 +9,6 @@ import defaultConfig from "../src/components/graph/graph.config";
 import { Graph } from "../src";
 import { generateFormSchema, loadDataset, setValue, tooltipReducer } from "./utils";
 import { isDeepEqual, merge } from "../src/utils";
-import { createCodeSandbox, deactivateCodeSandboxLink } from "./createCodeSandbox";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./styles.css";
@@ -257,6 +256,22 @@ export default class Sandbox extends React.Component {
   };
 
   /**
+   * This function decorates nodes and links with positions. The motivation
+   * for this function its to set `config.staticGraph` to true on the first render
+   * call, and to get nodes and links statically set to their initial positions.
+   * @param  {Object} nodes nodes and links with minimalist structure.
+   * @return {Object} the graph where now nodes containing (x,y) coords.
+   */
+  decorateGraphNodesWithInitialPositioning = nodes => {
+    return nodes.map(n =>
+      Object.assign({}, n, {
+        x: n.x || Math.floor(Math.random() * 500),
+        y: n.y || Math.floor(Math.random() * 500),
+      })
+    );
+  };
+
+  /**
    * Before removing elements (nodes, links)
    * from the graph data, this function is executed.
    * https://github.com/oxyno-zeta/react-editable-json-tree#beforeremoveaction
@@ -354,16 +369,6 @@ export default class Sandbox extends React.Component {
           <b>Nodes: </b> {this.state.data.nodes.length} |<b>Links: </b> {this.state.data.links.length} |<b>Zoom: </b>{" "}
           {this.state.currentZoom ? this.state.currentZoom.toFixed(3) : "-"}
         </span>
-        {!deactivateCodeSandboxLink(this.state.config) && (
-          <a href="javascript:void(0)">
-            <img
-              width="150px"
-              alt="Edit react-d3-graph"
-              src="https://codesandbox.io/static/img/play-codesandbox.svg"
-              onClick={() => createCodeSandbox(this.state.config, this.state.data)}
-            />
-          </a>
-        )}
       </div>
     );
   };
@@ -393,7 +398,7 @@ export default class Sandbox extends React.Component {
     // This does not happens in this sandbox scenario running time, but if we set staticGraph config
     // to true in the constructor we will provide nodes with initial positions
     const data = {
-      nodes: this.state.data.nodes,
+      nodes: this.decorateGraphNodesWithInitialPositioning(this.state.data.nodes),
       links: this.state.data.links,
       focusedNodeId: this.state.data.focusedNodeId,
     };

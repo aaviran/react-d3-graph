@@ -21,10 +21,6 @@ module.exports = {
         { x: 20, y: 100 },
       ],
     },
-    {
-      source: 4,
-      target: 4,
-    },
   ],
   nodes: [
     {
